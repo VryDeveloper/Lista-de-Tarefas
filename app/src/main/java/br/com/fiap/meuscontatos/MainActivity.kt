@@ -1,8 +1,5 @@
 package br.com.fiap.meuscontatos
 
-import android.R.attr.fontWeight
-import android.R.attr.text
-import android.graphics.Color.red
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -53,20 +50,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.meuscontatos.database.repository.TarefaRepository
 import br.com.fiap.meuscontatos.model.Tarefa
-import br.com.fiap.meuscontatos.ui.theme.MeusContatosTheme
+import br.com.fiap.meuscontatos.ui.theme.TarefasCheckListTheme
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MeusContatosTheme {
+            TarefasCheckListTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        ContatosScreen()
+                        TarefasScreen()
                     }
                 }
             }
@@ -75,7 +72,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContatosScreen() {
+fun TarefasScreen() {
 
     var nomeState = remember {
         mutableStateOf("")
@@ -99,7 +96,7 @@ fun ContatosScreen() {
 
 
     Column {
-        ContatoForm(
+        TarefasForm(
             nome = nomeState.value,
             descricao = descricaoState.value,
             feito = feitoState.value,
@@ -116,7 +113,7 @@ fun ContatosScreen() {
                 listaTarefasState.value = tarefaRepository.listarTarefas()
             }
         )
-        ContatoList(
+        TarefasList(
             listaTarefasState,
             atualizar = { listaTarefasState.value = tarefaRepository.listarTarefas() }
         )
@@ -125,7 +122,7 @@ fun ContatosScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContatoForm(
+fun TarefasForm(
     nome: String,
     descricao: String,
     feito: Boolean,
@@ -244,7 +241,7 @@ fun ContatoForm(
 }
 
 @Composable
-fun ContatoList(
+fun TarefasList(
     listaContatos: MutableState<List<Tarefa>>,
     atualizar: () -> Unit
 ) {
@@ -255,14 +252,14 @@ fun ContatoList(
             .verticalScroll(rememberScrollState())
     ) {
         for (contato in listaContatos.value) {
-            ContatoCard(contato, atualizar)
+            TarefasCard(contato, atualizar)
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
 
 @Composable
-fun ContatoCard(tarefa: Tarefa, atualizar: () -> Unit) {
+fun TarefasCard(tarefa: Tarefa, atualizar: () -> Unit) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
